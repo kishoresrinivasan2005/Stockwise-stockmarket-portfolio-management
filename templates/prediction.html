@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}AI Stock Prediction{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-robot text-primary me-2"></i>AI Stock Prediction</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('ml.index') }}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control form-control-lg" name="symbol" placeholder="Enter Stock Symbol (e.g., AAPL, TSLA)" required value="{{ request.form.get('symbol', '') }}">
+                        <button class="btn btn-primary custom-btn px-4" type="submit">Predict</button>
+                    </div>
+                </form>
+                <p class="text-muted small mb-0"><i class="fas fa-info-circle me-1"></i> Predictions are based on a Machine Learning model (Linear Regression) trained on historical price data.</p>
+            </div>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger shadow-sm">
+            <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if prediction %}
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Prediction Results for {{ prediction.symbol }}</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row text-center mb-4">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="p-3 border rounded h-100 shadow-sm">
+                            <h6 class="text-muted mb-2">Current Price</h6>
+                            <h3>${{ "%.2f"|format(prediction.current_price) }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="p-3 border rounded h-100 shadow-sm {% if prediction.trend == 'UP' %}border-success{% else %}border-danger{% endif %}">
+                            <h6 class="text-muted mb-2">Predicted Price (Next Day)</h6>
+                            <h3 class="{% if prediction.trend == 'UP' %}text-success{% else %}text-danger{% endif %}">
+                                ${{ "%.2f"|format(prediction.predicted_price) }}
+                                <i class="fas fa-arrow-{{ 'up' if prediction.trend == 'UP' else 'down' }} fs-5"></i>
+                            </h3>
+                            <div class="small fw-bold {% if prediction.trend == 'UP' %}text-success{% else %}text-danger{% endif %}">
+                                {{ "%.2f"|format(prediction.change) }} ({{ "%.2f"|format(prediction.change_pct) }}%)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded h-100 shadow-sm">
+                            <h6 class="text-muted mb-2">Model Accuracy (R²)</h6>
+                            <h3>{{ "%.2f"|format(prediction.accuracy) }}%</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid mt-3">
+                    <a href="{{ url_for('portfolio.add') }}?symbol={{ prediction.symbol }}" class="btn btn-outline-primary">Add {{ prediction.symbol }} to Portfolio</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+Flask
+Flask-MySQLdb
+Flask-Login
+Werkzeug
+pandas
+numpy
+scikit-learn
+reportlab
+yfinance
+python-dotenv

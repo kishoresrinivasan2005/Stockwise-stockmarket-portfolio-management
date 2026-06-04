@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Add Stock{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3">
+                <h4 class="mb-0 text-primary"><i class="fas fa-plus-circle me-2"></i>Add Stock to Portfolio</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('portfolio.add') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="stock_symbol" class="form-label">Stock Symbol</label>
+                            <input type="text" class="form-control" id="stock_symbol" name="stock_symbol" placeholder="e.g., AAPL" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="company_name" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="company_name" name="company_name" placeholder="e.g., Apple Inc.">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" min="1" step="1" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="buy_price" class="form-label">Purchase Price ($)</label>
+                            <input type="number" class="form-control" id="buy_price" name="buy_price" min="0.01" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="buy_date" class="form-label">Purchase Date</label>
+                        <input type="date" class="form-control" id="buy_date" name="buy_date" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('portfolio.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary custom-btn">Add Stock</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

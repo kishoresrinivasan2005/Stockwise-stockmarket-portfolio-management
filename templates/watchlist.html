@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}My Watchlist{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-eye text-primary me-2"></i>My Watchlist</h2>
+    <button type="button" class="btn btn-primary custom-btn" data-bs-toggle="modal" data-bs-target="#addWatchlistModal">
+        <i class="fas fa-plus me-1"></i> Add to Watchlist
+    </button>
+</div>
+
+<div class="row">
+    {% for item in items %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h4 class="card-title fw-bold mb-0">{{ item.stock_symbol }}</h4>
+                        <p class="text-muted small mb-3">{{ item.company_name }}</p>
+                    </div>
+                    <form action="{{ url_for('watchlist.remove', watchlist_id=item.watchlist_id) }}" method="POST">
+                        <button type="submit" class="btn btn-sm btn-outline-danger border-0" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="mt-2">
+                    <a href="{{ url_for('portfolio.add') }}?symbol={{ item.stock_symbol }}" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="fas fa-plus-circle me-1"></i> Add to Portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center py-5">
+        <div class="text-muted mb-3"><i class="fas fa-binoculars fa-3x"></i></div>
+        <h5 class="text-muted">Your watchlist is empty</h5>
+        <p class="text-muted">Keep an eye on stocks you are interested in.</p>
+        <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addWatchlistModal">
+            Add a stock
+        </button>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Add Watchlist Modal -->
+<div class="modal fade" id="addWatchlistModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-search me-2"></i>Add to Watchlist</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('watchlist.add') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="stock_symbol" class="form-label">Stock Symbol</label>
+                        <input type="text" class="form-control" id="stock_symbol" name="stock_symbol" placeholder="e.g. MSFT" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="company_name" class="form-label">Company Name (Optional)</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name" placeholder="e.g. Microsoft">
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary custom-btn">Add Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

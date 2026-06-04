@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-chart-line text-primary me-2"></i>Portfolio Analytics</h2>
+</div>
+
+<div class="row">
+    <!-- Portfolio Allocation -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-3 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Portfolio Allocation</h6>
+            </div>
+            <div class="card-body">
+                {% if metrics.allocation %}
+                    {% for item in metrics.allocation %}
+                    <h4 class="small font-weight-bold">{{ item.symbol }} <span class="float-end">{{ "%.1f"|format(item.percentage) }}%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ item.percentage }}%" aria-valuenow="{{ item.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No allocation data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Performance (Investments) -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 rounded-3 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Monthly Investment Trends</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Profit and Loss Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded shadow-sm">
+                            <h5 class="text-muted mb-2">Total Invested</h5>
+                            <h3>${{ "%.2f"|format(metrics.total_investment) }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded shadow-sm">
+                            <h5 class="text-muted mb-2">Current Value</h5>
+                            <h3>${{ "%.2f"|format(metrics.current_value) }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded shadow-sm {% if metrics.total_profit >= 0 %}border-success{% else %}border-danger{% endif %}">
+                            <h5 class="text-muted mb-2">Net Profit/Loss</h5>
+                            <h3 class="{% if metrics.total_profit >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                ${{ "%.2f"|format(metrics.total_profit) }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Render Chart.js
+    var monthlyData = {{ metrics.monthly_data | tojson | safe }};
+    if (monthlyData && monthlyData.length > 0) {
+        var labels = monthlyData.map(function(e) { return e.month; });
+        var data = monthlyData.map(function(e) { return e.invested; });
+        
+        var ctx = document.getElementById('monthlyChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Amount Invested ($)',
+                    data: data,
+                    backgroundColor: 'rgba(13, 110, 253, 0.5)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } else {
+        document.getElementById('monthlyChart').parentElement.innerHTML = '<p class="text-muted text-center">No transaction history found.</p>';
+    }
+});
+</script>
+{% endblock %}

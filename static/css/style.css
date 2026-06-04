@@ -1,0 +1,94 @@
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --bg-light: #f8f9fa;
+    --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.custom-navbar {
+    background-color: var(--primary-dark) !important;
+}
+
+.auth-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+.custom-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.custom-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.4);
+}
+
+.dashboard-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.table-custom {
+    box-shadow: var(--card-shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-custom th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    border-bottom: none;
+}
+
+.profit {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.loss {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.sidebar-nav {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    padding: 15px 0;
+}
+
+.sidebar-nav .nav-link {
+    color: #495057;
+    padding: 10px 20px;
+    transition: all 0.2s;
+}
+
+.sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+}

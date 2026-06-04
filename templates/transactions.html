@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Transaction History{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-history text-primary me-2"></i>Transaction History</h2>
+</div>
+
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-custom mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Symbol</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr class="align-middle">
+                        <td>{{ item.transaction_date.strftime('%Y-%m-%d %H:%M') if item.transaction_date else '' }}</td>
+                        <td><strong>{{ item.stock_symbol }}</strong></td>
+                        <td>
+                            {% if item.transaction_type == 'BUY' %}
+                                <span class="badge bg-success">BUY</span>
+                            {% else %}
+                                <span class="badge bg-danger">SELL</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ "%.2f"|format(item.price) }}</td>
+                        <td>${{ "%.2f"|format(item.quantity * item.price) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <div class="text-muted mb-2"><i class="fas fa-receipt fa-2x"></i></div>
+                            No transactions found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

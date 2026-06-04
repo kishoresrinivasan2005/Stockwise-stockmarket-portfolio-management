@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
+        <h1 class="display-4 fw-bold mb-3">Master Your Financial Future with StockWise</h1>
+        <p class="lead text-muted mb-4">The ultimate stock market portfolio management system. Track your investments, analyze performance, and make data-driven decisions with ease.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg custom-btn px-4 me-md-2">Get Started</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-4 text-center">
+                <i class="fas fa-chart-pie text-primary mb-3" style="font-size: 4rem;"></i>
+                <h3 class="fw-bold">Smart Analytics</h3>
+                <p class="text-muted">Visualize your portfolio's performance and track your profits and losses over time.</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card shadow border-0 rounded-3">
+                    <div class="card-body p-4 text-center">
+                        <i class="fas fa-robot text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">AI Predictions</h5>
+                        <p class="text-muted small mb-0">Leverage machine learning to predict stock trends.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card shadow border-0 rounded-3">
+                    <div class="card-body p-4 text-center">
+                        <i class="fas fa-file-pdf text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold">Detailed Reports</h5>
+                        <p class="text-muted small mb-0">Generate comprehensive PDF reports of your portfolio.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
